@@ -4,6 +4,7 @@ import Header from './components/header';
 import Article from './components/article';
 import Home from './components/home'
 import Linklist from './components/Linklist'
+import Control from './components/control'
 
 
 class App extends Component {
@@ -51,6 +52,10 @@ class App extends Component {
           });
         }.bind(this)}></Home>
         <Header></Header>
+        <Control onChangeMode={function (mode) {
+          var _mode = mode;
+          this.setState({ mode: _mode })
+        }.bind(this)}></Control>
         <Linklist onChangePage={function (id) {
           // debugger;
           this.setState({
