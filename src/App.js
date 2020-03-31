@@ -5,12 +5,14 @@ import Article from './components/article';
 import Home from './components/home'
 import Linklist from './components/Linklist'
 import Control from './components/control'
+import CreateControl from './components/CreateControl'
 
 
 class App extends Component {
 
   constructor(props) {
     super(props);
+    this.max_id = 3;
     this.state = {
       mode: "read",
       selected_id: 1,
@@ -23,12 +25,13 @@ class App extends Component {
   }
   render() {
     // eslint-disable-next-line no-unused-vars
-    var _who, _desc = null;
+    var _who, _desc, _content, result = null;
 
     // state mode를 만들어줌 , each mode can set "who" props in Article tag
     if (this.state.mode === "blank") {
       _who = "";
       _desc = this.state.who.desc;
+      _content = <Article who={_who} desc={_desc}></Article>
     }
     else if (this.state.mode === "read") {
       _who = this.state.who;
@@ -37,11 +40,22 @@ class App extends Component {
       while (i < data.length) {
         if (data[i].id === this.state.selected_id) {
           _desc = data[this.state.selected_id].desc;
+          _content = <Article who={_who} desc={_desc}></Article>
           break;
         }
         i++;
       }
 
+    }
+    else if (this.state.mode === "create") {
+      _content = <CreateControl onSubmit={function (title, desc) {
+        var result = this.state.who.concat({ title: title, desc: desc, id: this.max_id }) //need to change id increment
+        this.max_id++;
+        this.setState(
+          { who: result }
+        )
+
+      }.bind(this)}></CreateControl>
     }
 
     return (
@@ -63,7 +77,7 @@ class App extends Component {
             selected_id: Number(id)
           });
         }.bind(this)} data={this.state.who}></Linklist>
-        <Article who={_who} desc={_desc}></Article>
+        {_content}
       </div>
     );
   }
