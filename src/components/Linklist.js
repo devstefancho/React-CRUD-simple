@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 
 class Linklist extends Component {
     render() {
+        console.log("Linklist");
 
         // this.props.onChangePage();
         var data = this.props.data;
         var i = 0;
         var list = [];
         while (i < data.length) {
-            list.push(<li>
+            list.push(<li key={"key" + data[i].id}>
                 <a href={"/content" + data[i].id}
                     data-id={data[i].id}
                     onClick={function (e) {

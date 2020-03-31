@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 
 class Article extends Component {
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.who === this.props.who) {
+            console.log(`---> ${nextProps.who} and ${this.props.who}`)
+            return false
+        }
+        return true
+    }
     render() {
+        console.log("===> Article is updated !!!")
         var lists = [];
         var data = this.props.who;
         var desc = this.props.desc;
