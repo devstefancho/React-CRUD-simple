@@ -6,6 +6,7 @@ import Home from './components/home'
 import Linklist from './components/Linklist'
 import Control from './components/control'
 import CreateControl from './components/CreateControl'
+import UpdateControl from './components/UpdateControl';
 
 
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
       ]
     }
   }
+
   render() {
     // eslint-disable-next-line no-unused-vars
     var _who, _desc, _content, result = null;
@@ -50,16 +52,53 @@ class App extends Component {
     else if (this.state.mode === "create") {
       _content = <CreateControl onSubmit={function (title, desc) {
         var result = this.state.who.concat({ title: title, desc: desc, id: this.max_id }) //need to change id increment
-        this.max_id++;
+        this.max_id += 1;
+        // go to read mode after creating 
         this.setState(
-          { who: result }
+          {
+            who: result,
+            mode: "read",
+            selected_id: this.max_id - 1
+          }
         )
 
       }.bind(this)}></CreateControl>
     }
+    else if (this.state.mode === "update") {
+      var _data = null;
+      var data = this.state.who;
+      var i = 0;
+      //현재 선택된 id값을 찾은 다음 그 data를 component에 넘김
+
+      _data = data[this.state.selected_id];
+      _content =
+        <UpdateControl
+          data={_data}
+          onSubmit={function (_id, _title, _desc) {
+            var _who = Array.from(data);
+            while (i < data.length) {
+              if (data[i].id === _id) {
+                _who[i] = { id: _id, title: _title, desc: _desc };
+                break;
+              }
+              i++;
+            }
+            //go to read mode after updating
+            this.setState({
+              who: _who,
+              mode: "read"
+            })
+
+          }.bind(this)
+          }
+        ></UpdateControl>
+
+    }
+
+
 
     return (
-      <div className="App">
+      <div className="App" >
         <Home changePage={function (e) {
           this.setState({
             mode: "blank"
