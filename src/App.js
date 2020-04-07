@@ -41,8 +41,8 @@ class App extends Component {
       var data = this.state.who;
       while (i < data.length) {
         if (data[i].id === this.state.selected_id) {
-          _desc = data[this.state.selected_id].desc;
-          _content = <Article who={_who} desc={_desc}></Article>
+          _desc = data[i].desc;
+          _content = <Article desc={_desc}></Article>
           break;
         }
         i++;
@@ -108,6 +108,19 @@ class App extends Component {
         <Control onChangeMode={function (mode) {
           var _mode = mode;
           this.setState({ mode: _mode })
+          // 현재 무조건 index 0이 지워진다.. 왜그럴까..
+          if (_mode === "delete") {
+            if (window.confirm("It will be deleted !!")) {
+              _who = Array.from(this.state.who);
+              _who.splice(this.state.selected_id, 1);
+              this.setState({
+                who: _who,
+                mode: "blank"
+              })
+            }
+          }
+
+
         }.bind(this)}></Control>
         <Linklist onChangePage={function (id) {
           // debugger;

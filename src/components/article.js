@@ -10,7 +10,6 @@ class Article extends Component {
     // }
     render() {
         console.log("===> Article is updated !!!")
-        var lists = [];
         var data = this.props.who;
         var desc = this.props.desc;
         var i = 0;
@@ -21,7 +20,6 @@ class Article extends Component {
         return (
             <div className="article">
                 <div>
-                    {lists}
                     {desc}
                 </div>
             </div>
